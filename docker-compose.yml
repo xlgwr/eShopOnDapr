@@ -12,7 +12,7 @@ services:
     image: datalust/seq:latest
 
   sqldata:
-    image: mcr.microsoft.com/mssql/server:2017-latest 
+    image: mcr.microsoft.com/mssql/server:2019-latest 
 
   zipkin:
     image: openzipkin/zipkin-slim
@@ -99,7 +99,7 @@ services:
       - webshoppingagg
 
   webshoppingapigw:
-    image: envoyproxy/envoy:v1.14.2
+    image: envoyproxy/envoy:latest
 
   webshoppingapigw-dapr:
     image: "daprio/daprd:latest"
