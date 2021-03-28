@@ -1,7 +1,7 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 ARG NODE_IMAGE=node:12.0
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 EXPOSE 80
 RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
@@ -14,7 +14,7 @@ COPY src/Web/WebSPA/package-lock.json .
 COPY src/Web/WebSPA .
 RUN npm i npm@6.14.11 -g && npm update && npm install && npm run build:prod
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
 RUN apt-get install -y nodejs
 WORKDIR /src
