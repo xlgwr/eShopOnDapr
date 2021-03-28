@@ -12,12 +12,13 @@ FROM ${NODE_IMAGE} as node-build
 WORKDIR /web
 COPY src/Web/WebSPA/package.json .
 COPY src/Web/WebSPA/package-lock.json .
-# COPY src/Web/WebSPA/node_modules ./root
+# COPY src/Web/WebSPA/node_modules /root/node_modules
 COPY src/Web/WebSPA .
+RUN export PATH=$PATH:/web/src/Web/WebSPA/node_modules/.bin;
 # RUN npm config set registry=http://registry.npmjs.org
 # RUN npm config set registry=http://registry.npm.taobao.org
-# npm i npm -g && npm update && npm install -g npm &&
-RUN npm install -g @angular/cli
+# npm i npm -g && npm update && npm install -g npm && 
+RUN npm -v
 RUN npm run build:prod
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build

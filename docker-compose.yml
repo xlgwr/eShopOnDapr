@@ -114,8 +114,8 @@ services:
       dockerfile: src/Web/WebSPA/Dockerfile
     depends_on:
       - webshoppingagg
-    volumes:
-      - "src/Web/WebSPA/node_modules:/root/node_modules"
+    # volumes:
+    #  - "xxxx/src/Web/WebSPA/node_modules:/root/node_modules"
    
   webstatus:
     image: ${REGISTRY:-eshop}/webstatus:${PLATFORM:-linux}-${TAG:-latest}
