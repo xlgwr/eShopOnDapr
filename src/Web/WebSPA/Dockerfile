@@ -5,6 +5,7 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1 AS base
 WORKDIR /app
 EXPOSE 80
 RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
+RUN apt-get update
 RUN apt-get install -y nodejs
 
 FROM ${NODE_IMAGE} as node-build
@@ -16,6 +17,7 @@ RUN npm i npm@6.14.11 -g && npm update && npm install && npm run build:prod
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 RUN curl -sL https://deb.nodesource.com/setup_10.x |  bash -
+RUN apt-get update
 RUN apt-get install -y nodejs
 WORKDIR /src
 
