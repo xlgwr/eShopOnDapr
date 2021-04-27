@@ -21,7 +21,7 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewMo
             AllowRememberConsent = client.AllowRememberConsent;
 
             IdentityScopes = resources.IdentityResources.Select(x => new ScopeViewModel(x, ScopesConsented.Contains(x.Name) || model == null)).ToArray();
-            ResourceScopes = resources.ApiResources.SelectMany(x => x.Scopes).Select(x => new ScopeViewModel(x, ScopesConsented.Contains(x.Name) || model == null)).ToArray();
+            ResourceScopes = resources.ApiScopes.Select(x => new ScopeViewModel(x, ScopesConsented.Contains(x.Name) || model == null)).ToArray(); 
         }
 
         public string ClientName { get; set; }
@@ -30,12 +30,12 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewMo
         public bool AllowRememberConsent { get; set; }
 
         public IEnumerable<ScopeViewModel> IdentityScopes { get; set; }
-        public IEnumerable<ScopeViewModel> ResourceScopes { get; set; }
+        public IEnumerable<ScopeViewModel> ResourceScopes { get; set; } 
     }
 
     public class ScopeViewModel
     {
-        public ScopeViewModel(Scope scope, bool check)
+        public ScopeViewModel(ApiScope scope, bool check)
         {
             Name = scope.Name;
             DisplayName = scope.DisplayName;
@@ -61,5 +61,6 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewMo
         public bool Emphasize { get; set; }
         public bool Required { get; set; }
         public bool Checked { get; set; }
+         
     }
 }
