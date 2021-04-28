@@ -1,12 +1,9 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 ARG NODE_IMAGE=node:16.0
-FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
+FROM localaspnet:5 AS base 
 WORKDIR /app
 EXPOSE 80
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x |  bash -
-RUN apt-get update
-RUN apt-get install -y nodejs
 
 FROM ${NODE_IMAGE} as node-build
 WORKDIR /web
@@ -21,10 +18,7 @@ RUN export PATH=$PATH:/web/src/Web/WebSPA/node_modules/.bin;
 RUN npm -v
 RUN npm run build:prod
 
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
-RUN apt-get update
-RUN apt-get install -y nodejs
+FROM localdotnet:5 AS build 
 WORKDIR /src
 
 # Create this "restore-solution" section by running ./Create-DockerfileSolutionRestore.ps1, to optimize build cache reuse
