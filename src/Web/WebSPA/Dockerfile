@@ -1,10 +1,10 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-ARG NODE_IMAGE=node:15.0
+ARG NODE_IMAGE=node:16.0
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
 EXPOSE 80
-RUN curl -fsSL https://deb.nodesource.com/setup_15.x |  bash -
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x |  bash -
 RUN apt-get update
 RUN apt-get install -y nodejs
 
@@ -22,7 +22,7 @@ RUN npm -v
 RUN npm run build:prod
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
-RUN curl -fsSL https://deb.nodesource.com/setup_15.x | bash -
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash -
 RUN apt-get update
 RUN apt-get install -y nodejs
 WORKDIR /src
