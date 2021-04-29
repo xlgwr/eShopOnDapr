@@ -30,7 +30,7 @@ namespace WebStatus
             services.AddHealthChecks()
                 .AddCheck("self", () => HealthCheckResult.Healthy());
 
-            services.AddHealthChecksUI();
+            services.AddHealthChecksUI().AddSqlServerStorage(Configuration["ConnectionString"]); ;
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
         }

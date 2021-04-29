@@ -227,6 +227,7 @@ services:
   webstatus:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionString=${ESHOP_AZURE_Health_DB:-Server=sqldata;Database=HealthChecks.UI.Core.Data.HealthChecksDb;User Id=sa;Password=Pass@word}
       - ASPNETCORE_URLS=http://0.0.0.0:80
       - HealthChecksUI__HealthChecks__1__Name=Basket API
       - HealthChecksUI__HealthChecks__1__Uri=http://basket-api/hc
