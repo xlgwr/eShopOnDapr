@@ -74,9 +74,7 @@ namespace Microsoft.AspNetCore.Hosting
             //EnsureCreated方法不需要先执行Add-migration迁移命令，如果数据库不存在，则自动创建并返回true。
             //如果已经创建了数据库后，又改动了实体Model和之前的库存在冲突，要注意删库让它自动重建，否则会报错。
             //db.Database.EnsureDeleted();//删除数据库
-            //db.Database.EnsureCreated();
-
-            context.Database.EnsureDeleted();
+            //db.Database.EnsureCreated(); 
             context.Database.Migrate();
             seeder(context, services);
         }

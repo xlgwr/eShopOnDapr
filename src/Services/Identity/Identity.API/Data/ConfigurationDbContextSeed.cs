@@ -78,6 +78,16 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Data
 
                 await context.SaveChangesAsync();
             }
+
+            if (!context.ApiScopes.Any())
+            {
+                foreach (var api in Config.GetApiScopes())
+                {
+                    context.ApiScopes.Add(api.ToEntity());
+                }
+
+                await context.SaveChangesAsync();
+            }
         }
     }
 }

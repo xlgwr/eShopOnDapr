@@ -19,8 +19,10 @@
 
     public class CatalogContextSeed
     {
-        public async Task SeedAsync(CatalogContext context,IWebHostEnvironment env,IOptions<CatalogSettings> settings,ILogger<CatalogContextSeed> logger)
+        public ILogger CurrLogger { get; set; }
+        public async Task SeedAsync(CatalogContext context, IWebHostEnvironment env, IOptions<CatalogSettings> settings, ILogger<CatalogContextSeed> logger)
         {
+            CurrLogger = logger;
             var policy = CreatePolicy(logger, nameof(CatalogContextSeed));
 
             await policy.ExecuteAsync(async () =>
@@ -73,7 +75,7 @@
             try
             {
                 string[] requiredHeaders = { "catalogbrand" };
-                csvheaders = GetHeaders( csvFileCatalogBrands, requiredHeaders );
+                csvheaders = GetHeaders(csvFileCatalogBrands, requiredHeaders);
             }
             catch (Exception ex)
             {
@@ -128,7 +130,7 @@
             try
             {
                 string[] requiredHeaders = { "catalogtype" };
-                csvheaders = GetHeaders( csvFileCatalogTypes, requiredHeaders );
+                csvheaders = GetHeaders(csvFileCatalogTypes, requiredHeaders);
             }
             catch (Exception ex)
             {
@@ -183,7 +185,7 @@
             {
                 string[] requiredHeaders = { "catalogtypename", "catalogbrandname", "description", "name", "price", "picturefilename" };
                 string[] optionalheaders = { "availablestock", "restockthreshold", "maxstockthreshold", "onreorder" };
-                csvheaders = GetHeaders(csvFileCatalogItems, requiredHeaders, optionalheaders );
+                csvheaders = GetHeaders(csvFileCatalogItems, requiredHeaders, optionalheaders);
             }
             catch (Exception ex)
             {
@@ -196,7 +198,7 @@
 
             return File.ReadAllLines(csvFileCatalogItems)
                 .Skip(1) // skip header row
-                .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)") )
+                .Select(row => Regex.Split(row, ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)"))
                 .SelectTry(column => CreateCatalogItem(column, csvheaders, catalogTypeIdLookup, catalogBrandIdLookup))
                 .OnCaughtException(ex => { logger.LogError(ex, "EXCEPTION ERROR: {Message}", ex.Message); return null; })
                 .Where(x => x != null);
@@ -243,7 +245,7 @@
                 string availableStockString = column[availableStockIndex].Trim('"').Trim();
                 if (!String.IsNullOrEmpty(availableStockString))
                 {
-                    if ( int.TryParse(availableStockString, out int availableStock))
+                    if (int.TryParse(availableStockString, out int availableStock))
                     {
                         catalogItem.AvailableStock = availableStock;
                     }
@@ -368,11 +370,18 @@
                 }
 
                 string zipFileCatalogItemPictures = Path.Combine(contentRootPath, "Setup", "CatalogItems.zip");
-                ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
+                try
+                {
+                    ZipFile.ExtractToDirectory(zipFileCatalogItemPictures, picturePath);
+                }
+                catch (Exception ex)
+                {
+                    CurrLogger.LogError(ex, "Pic error zipfile");
+                }
             }
         }
 
-        private AsyncRetryPolicy CreatePolicy( ILogger<CatalogContextSeed> logger, string prefix,int retries = 3)
+        private AsyncRetryPolicy CreatePolicy(ILogger<CatalogContextSeed> logger, string prefix, int retries = 3)
         {
             return Policy.Handle<SqlException>().
                 WaitAndRetryAsync(

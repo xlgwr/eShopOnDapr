@@ -11,17 +11,31 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Configuration
         {
             return new List<ApiResource>
             {
-                new ApiResource("orders", "Orders Service"),
-                new ApiResource("basket", "Basket Service"),
-                new ApiResource("marketing", "Marketing Service"),
-                new ApiResource("locations", "Locations Service"),
-                new ApiResource("mobileshoppingagg", "Mobile Shopping Aggregator"),
-                new ApiResource("webshoppingagg", "Web Shopping Aggregator"),
-                new ApiResource("orders.signalrhub", "Ordering Signalr Hub"),
-                new ApiResource("webhooks", "Webhooks registration Service"),
+                new ApiResource("orders", "Orders Service"){  Scopes={ "orders" } },
+                new ApiResource("basket", "Basket Service"){  Scopes={"basket"}},
+                new ApiResource("marketing", "Marketing Service"){  Scopes={"marketing"}},
+                new ApiResource("locations", "Locations Service"){  Scopes={"locations"}},
+                new ApiResource("mobileshoppingagg", "Mobile Shopping Aggregator"){  Scopes={"mobileshoppingagg"}},
+                new ApiResource("webshoppingagg", "Web Shopping Aggregator"){  Scopes={"webshoppingagg"}},
+                new ApiResource("orders.signalrhub", "Ordering Signalr Hub"){  Scopes={"orders.signalrhub"}},
+                new ApiResource("webhooks", "Webhooks registration Service"){  Scopes={"webhooks"}},
             };
         }
-
+        // ApiResources define the apis in your system
+        public static IEnumerable<ApiScope> GetApiScopes()
+        {
+            return new List<ApiScope>
+            {
+                new ApiScope("orders", "Orders Service"),
+                new ApiScope("basket", "Basket Service"),
+                new ApiScope("marketing", "Marketing Service"),
+                new ApiScope("locations", "Locations Service"),
+                new ApiScope("mobileshoppingagg", "Mobile Shopping Aggregator"),
+                new ApiScope("webshoppingagg", "Web Shopping Aggregator"),
+                new ApiScope("orders.signalrhub", "Ordering Signalr Hub"),
+                new ApiScope("webhooks", "Webhooks registration Service"),
+            };
+        }
         // Identity resources are data like user ID, name, or email address of a user
         // see: http://docs.identityserver.io/en/release/configuration/resources.html
         public static IEnumerable<IdentityResource> GetResources()
