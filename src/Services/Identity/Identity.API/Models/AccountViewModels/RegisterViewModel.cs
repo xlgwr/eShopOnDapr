@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Identity.API.ResourcesCus;
+using System.ComponentModel.DataAnnotations;
 
 namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewModels
 {
@@ -16,8 +17,11 @@ namespace Microsoft.eShopOnContainers.Services.Identity.API.Models.AccountViewMo
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        //[Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Compare("Password", ErrorMessageResourceType = typeof(Resource), ErrorMessageResourceName = "MobileRequire")]
+        //[Required(ErrorMessageResourceType = typeof(IdentityServer4.Models.ErrorMessage), ErrorMessageResourceName = "MobileRequire")]
+        [Display(Name = "Confirm password", ResourceType = typeof(Resource))]
+
         public string ConfirmPassword { get; set; }
 
         public ApplicationUser User { get; set; }
