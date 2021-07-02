@@ -1,4 +1,4 @@
-﻿using Identity.API.Resources;
+﻿using Identity.API.ResourcesCus;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
